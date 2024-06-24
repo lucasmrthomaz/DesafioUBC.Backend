@@ -1,10 +1,9 @@
-﻿using DesafioUBC.Backend.Data;
-using DesafioUBC.Backend.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using DesafioUBC.Backend.Domain.Entities;
+using DesafioUBC.Backend.Data;
 
 namespace DesafioUBC.Backend.API.Controllers
 {
@@ -19,36 +18,104 @@ namespace DesafioUBC.Backend.API.Controllers
             _context = context;
         }
 
-        // GET: api/<StudentsController>
+        // GET: api/Students1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> Get()
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
-            return await _context.Student.ToListAsync();    
+          if (_context.Student == null)
+          {
+              return NotFound();
+          }
+            return await _context.Student.ToListAsync();
         }
 
-        // GET api/<StudentsController>/5
+        // GET: api/Students1/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Student>> GetStudent(int id)
         {
-            return "value";
+          if (_context.Student == null)
+          {
+              return NotFound();
+          }
+            var student = await _context.Student.FindAsync(id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return student;
         }
 
-        // POST api/<StudentsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<StudentsController>/5
+        // PUT: api/Students1/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> PutStudent(int id, Student student)
         {
+            if (id != student.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(student).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!StudentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // DELETE api/<StudentsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // POST: api/Students1
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Student>> PostStudent(Student student)
         {
+          if (_context.Student == null)
+          {
+              return Problem("Entity set 'DesafioUBCBackendAPIContext.Student'  is null.");
+          }
+            _context.Student.Add(student);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+        }
+
+        // DELETE: api/Students1/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            if (_context.Student == null)
+            {
+                return NotFound();
+            }
+            var student = await _context.Student.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            _context.Student.Remove(student);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool StudentExists(int id)
+        {
+            return (_context.Student?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
