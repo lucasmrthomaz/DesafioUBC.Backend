@@ -11,12 +11,6 @@ builder.Services.AddDbContext<DesafioUBCContext>(options =>
 //builder.Services.AddDbContext<DesafioUBCContext>(options =>
 //    options.UseInMemoryDatabase("DesafioUBC"));
 
-//builder.Services.AddDbContext<DesafioUBCContext>(options =>
-//    options.UseSqlite(connString));
-
-//builder.Services.AddDbContext<DesafioUBCContext>(options =>/
-//    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DesafioUBC;Trusted_Connection=True;"));
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,6 +20,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters

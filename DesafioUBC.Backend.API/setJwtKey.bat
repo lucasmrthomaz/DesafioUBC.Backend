@@ -1,0 +1,3 @@
+dotnet user-secrets set Jwt:Key "f54dfefbf427eff71af8a56e9ed8adfdee37626f3a77bf7642c0a513c85bd56d420e5ded41e3887b705fd2d6d86f89977ab7437aed12cfc8b517e7637d5bf513"
+
+pause
