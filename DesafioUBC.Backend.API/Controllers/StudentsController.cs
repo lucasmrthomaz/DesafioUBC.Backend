@@ -18,7 +18,7 @@ namespace DesafioUBC.Backend.API.Controllers
             _context = context;
         }
 
-        // GET: api/Students1
+        // GET: api/Students
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
@@ -29,7 +29,7 @@ namespace DesafioUBC.Backend.API.Controllers
             return await _context.Student.ToListAsync();
         }
 
-        // GET: api/Students1/5
+        // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
@@ -47,8 +47,7 @@ namespace DesafioUBC.Backend.API.Controllers
             return student;
         }
 
-        // PUT: api/Students1/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Students/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStudent(int id, Student student)
         {
@@ -78,8 +77,7 @@ namespace DesafioUBC.Backend.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Students1
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Students
         [HttpPost]
         public async Task<ActionResult<Student>> PostStudent(Student student)
         {
@@ -93,7 +91,7 @@ namespace DesafioUBC.Backend.API.Controllers
             return CreatedAtAction("GetStudent", new { id = student.Id }, student);
         }
 
-        // DELETE: api/Students1/5
+        // DELETE: api/Students/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
